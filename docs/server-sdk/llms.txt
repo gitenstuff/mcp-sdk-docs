@@ -1,0 +1,20 @@
+# Server SDK Documentation Map
+
+## Core
+- [INDEX.md](INDEX.md): MANDATORY READ. Concepts, architecture, and dependency relationships. Start here.
+- [quickstart.md](quickstart.md): Copy-pasteable boilerplate code.
+
+## API & Class Signatures
+- [api/mcp-server.md](api/mcp-server.md): READ for `McpServer` constructor options and method signatures.
+- [api/transports.md](api/transports.md): READ for `StreamableHTTPServerTransport` (Server HTTP), `StdioServerTransport`, and `SSEServerTransport` (Legacy) information.
+
+## Feature Implementation
+- [capabilities/tools.md](capabilities/tools.md): READ for syntax on registering tools and Zod schema validation.
+- [capabilities/resources.md](capabilities/resources.md): READ for resource URI templates and content handling.
+- [capabilities/prompts.md](capabilities/prompts.md): READ for prompt registration patterns.
+- [capabilities/sampling.md](capabilities/sampling.md): READ for `server.createMessage` (Sampling) usage.
+
+## Patterns
+- [patterns/authentication.md](patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
+- [patterns/error-handling.md](patterns/error-handling.md): READ for `McpError` usage and error codes.
+- [docs/server-sdk/types.md](docs/server-sdk/types.md): REFERENCE. TypeScript definitions for McpServer, Transports, and Capabilities.

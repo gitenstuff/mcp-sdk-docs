@@ -1,0 +1,20 @@
+# Client SDK Documentation Map
+
+## Core
+- [INDEX.md](INDEX.md): MANDATORY READ. Concepts, architecture, and dependency relationships. Start here.
+- [quickstart.md](quickstart.md): Copy-pastable boilerplate code.
+
+## API & Class Signatures
+- [api/client.md](api/client.md): READ for `Client` constructor options, request methods, and connection management.
+- [api/transports.md](api/transports.md): READ for `StreamableHTTPClientTransport` (Client HTTP), `StdioClientTransport`, and `SSEClientTransport` (Legacy) information.
+
+## Feature Consumption
+- [capabilities/tools.md](capabilities/tools.md): READ for listing and calling tools.
+- [capabilities/resources.md](capabilities/resources.md): READ for listing, reading, and subscribing to resources.
+- [capabilities/prompts.md](capabilities/prompts.md): READ for listing and retrieving prompts.
+- [capabilities/sampling.md](capabilities/sampling.md): READ for handling sampling requests from the server (if building an agent).
+- [capabilities/roots.md](capabilities/roots.md): READ for exposing filesystem roots to the server.
+
+## Patterns
+- [patterns/host-application.md](patterns/host-application.md): READ for integrating the client into a larger application (Host).
+- [docs/client-sdk/types.md](docs/client-sdk/types.md): REFERENCE. TypeScript definitions for Client, Transports, and Capabilities.

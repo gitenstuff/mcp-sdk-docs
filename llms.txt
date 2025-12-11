@@ -1,0 +1,41 @@
+# MCP Documentation Map
+
+## Client SDK
+
+### Core
+- [docs/client-sdk/INDEX.md](docs/client-sdk/INDEX.md): MANDATORY READ. Concepts, architecture, and dependency relationships. Start here.
+- [docs/client-sdk/quickstart.md](docs/client-sdk/quickstart.md): Copy-pasteable boilerplate code.
+
+### API & Class Signatures
+- [docs/client-sdk/api/client.md](docs/client-sdk/api/client.md): READ for `Client` constructor options, request methods, and connection management.
+- [docs/client-sdk/api/transports.md](docs/client-sdk/api/transports.md): READ for `StreamableHTTPClientTransport` (Client HTTP), `StdioClientTransport`, and `SSEClientTransport` (Legacy) information.
+
+### Feature Consumption
+- [docs/client-sdk/capabilities/tools.md](docs/client-sdk/capabilities/tools.md): READ for listing and calling tools.
+- [docs/client-sdk/capabilities/resources.md](docs/client-sdk/capabilities/resources.md): READ for listing, reading, and subscribing to resources.
+- [docs/client-sdk/capabilities/prompts.md](docs/client-sdk/capabilities/prompts.md): READ for listing and retrieving prompts.
+- [docs/client-sdk/capabilities/sampling.md](docs/client-sdk/capabilities/sampling.md): READ for handling sampling requests from the server (if building an agent).
+- [docs/client-sdk/capabilities/roots.md](docs/client-sdk/capabilities/roots.md): READ for exposing filesystem roots to the server.
+
+### Patterns
+- [docs/client-sdk/patterns/host-application.md](docs/client-sdk/patterns/host-application.md): READ for integrating the client into a larger application (Host).
+
+## Server SDK
+
+### Core
+- [docs/server-sdk/INDEX.md](docs/server-sdk/INDEX.md): MANDATORY READ. Concepts, architecture, and dependency relationships. Start here.
+- [docs/server-sdk/quickstart.md](docs/server-sdk/quickstart.md): Copy-pasteable boilerplate code.
+
+### API & Class Signatures
+- [docs/server-sdk/api/mcp-server.md](docs/server-sdk/api/mcp-server.md): READ for `McpServer` constructor options and method signatures.
+- [docs/server-sdk/api/transports.md](docs/server-sdk/api/transports.md): READ for `StreamableHTTPServerTransport` (Server HTTP), `StdioServerTransport`, and `SSEServerTransport` (Legacy) information.
+
+### Feature Implementation
+- [docs/server-sdk/capabilities/tools.md](docs/server-sdk/capabilities/tools.md): READ for syntax on registering tools and Zod schema validation.
+- [docs/server-sdk/capabilities/resources.md](docs/server-sdk/capabilities/resources.md): READ for resource URI templates and content handling.
+- [docs/server-sdk/capabilities/prompts.md](docs/server-sdk/capabilities/prompts.md): READ for prompt registration patterns.
+- [docs/server-sdk/capabilities/sampling.md](docs/server-sdk/capabilities/sampling.md): READ for `server.createMessage` (Sampling) usage.
+
+### Patterns
+- [docs/server-sdk/patterns/authentication.md](docs/server-sdk/patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
+- [docs/server-sdk/patterns/error-handling.md](docs/server-sdk/patterns/error-handling.md): READ for `McpError` usage and error codes.- [types.md](types.md): REFERENCE. Index of TypeScript definitions for Client and Server SDKs.
