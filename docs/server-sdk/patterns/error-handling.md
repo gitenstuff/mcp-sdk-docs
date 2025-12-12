@@ -21,19 +21,25 @@ new McpError(code: ErrorCode | number, message: string, data?: unknown)
 ```typescript
 import { McpError, ErrorCode } from "@modelcontextprotocol/sdk/types.js";
 
-server.tool("get-user", { id: z.string() }, async ({ id }) => {
-  const user = await db.findUser(id);
-  
-  if (!user) {
-    // Throwing this will result in a JSON-RPC error response to the client
-    throw new McpError(
-      ErrorCode.InvalidParams,
-      `User with ID ${id} not found`
-    );
+server.registerTool(
+  {
+    name: "get-user",
+    args: { id: z.string() }
+  },
+  async ({ id }) => {
+    const user = await db.findUser(id);
+    
+    if (!user) {
+      // Throwing this will result in a JSON-RPC error response to the client
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `User with ID ${id} not found`
+      );
+    }
+    
+    return { content: [{ type: "text", text: JSON.stringify(user) }] };
   }
-  
-  return { content: [{ type: "text", text: JSON.stringify(user) }] };
-});
+);
 ```
 
 ---
@@ -69,17 +75,23 @@ For tools, you often have a choice: **Throw an error** vs. **Return an error res
 
 ```typescript
 // PREFERRED for logic errors
-server.tool("read-file", { path: z.string() }, async ({ path }) => {
-  try {
-    const data = await fs.readFile(path, "utf-8");
-    return { content: [{ type: "text", text: data }] };
-  } catch (err) {
-    return {
-      isError: true, // Tells the LLM "I tried, but it failed"
-      content: [{ type: "text", text: `Error reading file: ${err.message}` }]
-    };
+server.registerTool(
+  {
+    name: "read-file",
+    args: { path: z.string() }
+  },
+  async ({ path }) => {
+    try {
+      const data = await fs.readFile(path, "utf-8");
+      return { content: [{ type: "text", text: data }] };
+    } catch (err) {
+      return {
+        isError: true, // Tells the LLM "I tried, but it failed"
+        content: [{ type: "text", text: `Error reading file: ${err.message}` }]
+      };
+    }
   }
-});
+);
 ```
 
 ### 2. Logging

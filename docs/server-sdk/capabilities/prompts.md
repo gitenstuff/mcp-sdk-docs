@@ -4,14 +4,17 @@ Prompts allow servers to provide reusable prompt templates that clients can disc
 
 ## Registering a Prompt
 
-Use `server.prompt` to register a new prompt. You define the prompt's name, its argument schema (using Zod), and a callback that generates the prompt messages.
+Use `server.registerPrompt` to register a new prompt. You define the prompt's name, its argument schema (using Zod), and a callback that generates the prompt messages.
 
 ### Signature
 
 ```typescript
-server.prompt(
-  name: string,
-  schema: ZodRawShapeCompat,
+server.registerPrompt(
+  options: {
+    name: string;
+    description?: string;
+    args: ZodRawShape;
+  },
   callback: (args) => GetPromptResult | Promise<GetPromptResult>
 )
 ```
@@ -21,10 +24,12 @@ server.prompt(
 ```typescript
 import { z } from "zod";
 
-server.prompt(
-  "git-commit",
+server.registerPrompt(
   {
-    changes: z.string().describe("The git diff or description of changes")
+    name: "git-commit",
+    args: {
+      changes: z.string().describe("The git diff or description of changes")
+    }
   },
   async ({ changes }) => {
     return {
@@ -53,11 +58,13 @@ Arguments are defined using a Zod schema object. The keys of the object become t
 *   **Descriptions**: Use `.describe()` to provide help text for the client.
 
 ```typescript
-server.prompt(
-  "explain-code",
+server.registerPrompt(
   {
-    code: z.string().describe("The code snippet to explain"),
-    detailLevel: z.enum(["brief", "detailed"]).optional().describe("Level of detail")
+    name: "explain-code",
+    args: {
+      code: z.string().describe("The code snippet to explain"),
+      detailLevel: z.enum(["brief", "detailed"]).optional().describe("Level of detail")
+    }
   },
   async ({ code, detailLevel = "brief" }) => {
     const promptText = detailLevel === "brief" 
@@ -118,9 +125,11 @@ Here are some common prompt patterns you can adapt:
 ### 1. Code Review
 
 ```typescript
-server.prompt(
-  "review-code",
-  { code: z.string() },
+server.registerPrompt(
+  {
+    name: "review-code",
+    args: { code: z.string() }
+  },
   ({ code }) => ({
     messages: [{
       role: "user",
@@ -136,11 +145,13 @@ server.prompt(
 ### 2. Unit Test Generation
 
 ```typescript
-server.prompt(
-  "generate-tests",
-  { 
-    code: z.string(),
-    framework: z.string().default("vitest") 
+server.registerPrompt(
+  {
+    name: "generate-tests",
+    args: { 
+      code: z.string(),
+      framework: z.string().default("vitest") 
+    }
   },
   ({ code, framework }) => ({
     messages: [{
@@ -157,11 +168,13 @@ server.prompt(
 ### 3. Debugging Assistant
 
 ```typescript
-server.prompt(
-  "debug-error",
-  { 
-    error: z.string(),
-    context: z.string().optional() 
+server.registerPrompt(
+  {
+    name: "debug-error",
+    args: { 
+      error: z.string(),
+      context: z.string().optional() 
+    }
   },
   ({ error, context }) => ({
     messages: [{

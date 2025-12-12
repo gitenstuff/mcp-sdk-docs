@@ -5,16 +5,18 @@
 - [quickstart.md](quickstart.md): Copy-pasteable boilerplate code.
 
 ## API & Class Signatures
-- [api/mcp-server.md](api/mcp-server.md): READ for `McpServer` constructor options and method signatures.
-- [api/transports.md](api/transports.md): READ for `StreamableHTTPServerTransport` (Server HTTP), `StdioServerTransport`, and `SSEServerTransport` (Legacy) information.
+- [api/mcp-server.md](api/mcp-server.md): READ for `McpServer` constructor options, `registerTool`/`registerResource`/`registerPrompt` methods, and deprecated signatures.
+- [api/stdio-server-transport.md](api/stdio-server-transport.md): READ for `StdioServerTransport` (CLI) API.
+- [api/streamable-http-server-transport.md](api/streamable-http-server-transport.md): READ for `StreamableHTTPServerTransport` (HTTP/SSE) API.
+- [api/sse-server-transport.md](api/sse-server-transport.md): READ for `SSEServerTransport` (Legacy/Deprecated) API.
 
 ## Feature Implementation
-- [capabilities/tools.md](capabilities/tools.md): READ for syntax on registering tools and Zod schema validation.
-- [capabilities/resources.md](capabilities/resources.md): READ for resource URI templates and content handling.
-- [capabilities/prompts.md](capabilities/prompts.md): READ for prompt registration patterns.
+- [capabilities/tools.md](capabilities/tools.md): READ for syntax on registering tools (`registerTool`) and Zod schema validation.
+- [capabilities/resources.md](capabilities/resources.md): READ for resource URI templates and content handling (`registerResource`).
+- [capabilities/prompts.md](capabilities/prompts.md): READ for prompt registration patterns (`registerPrompt`).
 - [capabilities/sampling.md](capabilities/sampling.md): READ for `server.createMessage` (Sampling) usage.
 
 ## Patterns
 - [patterns/authentication.md](patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
 - [patterns/error-handling.md](patterns/error-handling.md): READ for `McpError` usage and error codes.
-- [docs/server-sdk/types.md](docs/server-sdk/types.md): REFERENCE. TypeScript definitions for McpServer, Transports, and Capabilities.
+- [types.md](types.md): REFERENCE. TypeScript definitions for McpServer, Transports, and Capabilities.

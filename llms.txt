@@ -27,15 +27,18 @@
 - [docs/server-sdk/quickstart.md](docs/server-sdk/quickstart.md): Copy-pasteable boilerplate code.
 
 ### API & Class Signatures
-- [docs/server-sdk/api/mcp-server.md](docs/server-sdk/api/mcp-server.md): READ for `McpServer` constructor options and method signatures.
-- [docs/server-sdk/api/transports.md](docs/server-sdk/api/transports.md): READ for `StreamableHTTPServerTransport` (Server HTTP), `StdioServerTransport`, and `SSEServerTransport` (Legacy) information.
+- [docs/server-sdk/api/mcp-server.md](docs/server-sdk/api/mcp-server.md): READ for `McpServer` constructor options, `registerTool`/`registerResource`/`registerPrompt` methods, and deprecated signatures.
+- [docs/server-sdk/api/stdio-server-transport.md](docs/server-sdk/api/stdio-server-transport.md): READ for `StdioServerTransport` (CLI) API.
+- [docs/server-sdk/api/streamable-http-server-transport.md](docs/server-sdk/api/streamable-http-server-transport.md): READ for `StreamableHTTPServerTransport` (HTTP/SSE) API.
+- [docs/server-sdk/api/sse-server-transport.md](docs/server-sdk/api/sse-server-transport.md): READ for `SSEServerTransport` (Legacy/Deprecated) API.
 
 ### Feature Implementation
-- [docs/server-sdk/capabilities/tools.md](docs/server-sdk/capabilities/tools.md): READ for syntax on registering tools and Zod schema validation.
-- [docs/server-sdk/capabilities/resources.md](docs/server-sdk/capabilities/resources.md): READ for resource URI templates and content handling.
-- [docs/server-sdk/capabilities/prompts.md](docs/server-sdk/capabilities/prompts.md): READ for prompt registration patterns.
+- [docs/server-sdk/capabilities/tools.md](docs/server-sdk/capabilities/tools.md): READ for syntax on registering tools (`registerTool`) and Zod schema validation.
+- [docs/server-sdk/capabilities/resources.md](docs/server-sdk/capabilities/resources.md): READ for resource URI templates and content handling (`registerResource`).
+- [docs/server-sdk/capabilities/prompts.md](docs/server-sdk/capabilities/prompts.md): READ for prompt registration patterns (`registerPrompt`).
 - [docs/server-sdk/capabilities/sampling.md](docs/server-sdk/capabilities/sampling.md): READ for `server.createMessage` (Sampling) usage.
 
 ### Patterns
 - [docs/server-sdk/patterns/authentication.md](docs/server-sdk/patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
-- [docs/server-sdk/patterns/error-handling.md](docs/server-sdk/patterns/error-handling.md): READ for `McpError` usage and error codes.- [types.md](types.md): REFERENCE. Index of TypeScript definitions for Client and Server SDKs.
+- [docs/server-sdk/patterns/error-handling.md](docs/server-sdk/patterns/error-handling.md): READ for `McpError` usage and error codes.
+- [types.md](types.md): REFERENCE. Index of TypeScript definitions for Client and Server SDKs.

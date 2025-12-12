@@ -4,14 +4,18 @@ Resources allow servers to expose data to clients, such as files, database recor
 
 ## Registering a Resource
 
-Use `server.resource` to register a new resource. You define the resource's name, its URI (or URI template), and a callback that retrieves the content.
+Use `server.registerResource` to register a new resource. You define the resource's name, its URI (or URI template), and a callback that retrieves the content.
 
 ### Signature
 
 ```typescript
-server.resource(
-  name: string,
-  uriOrTemplate: string | ResourceTemplate,
+server.registerResource(
+  options: {
+    name: string;
+    uri?: string;
+    template?: string;
+    mimeType?: string;
+  },
   callback: (uri, variables) => ReadResourceResult | Promise<ReadResourceResult>
 )
 ```
@@ -21,9 +25,12 @@ server.resource(
 Static resources have a fixed URI. This is useful for single files or global configuration.
 
 ```typescript
-server.resource(
-  "system-config",
-  "file:///etc/myapp/config.json",
+server.registerResource(
+  {
+    name: "system-config",
+    uri: "file:///etc/myapp/config.json",
+    mimeType: "application/json"
+  },
   async (uri) => {
     const config = await readConfigFile();
     return {
@@ -48,9 +55,12 @@ URI Templates allow you to define a pattern that matches multiple resources. The
 Templates follow RFC 6570 Level 1 (e.g., `file:///logs/{id}`).
 
 ```typescript
-server.resource(
-  "log-file",
-  "file:///logs/{id}",
+server.registerResource(
+  {
+    name: "log-file",
+    template: "file:///logs/{id}",
+    mimeType: "text/plain"
+  },
   async (uri, { id }) => {
     // If client requests "file:///logs/123", id will be "123"
     const logData = await getLogById(id);
@@ -106,9 +116,12 @@ import path from "path";
 import fs from "fs/promises";
 
 // Matches any file under the project directory
-server.resource(
-  "project-files",
-  "file:///project/{path}",
+server.registerResource(
+  {
+    name: "project-files",
+    template: "file:///project/{path}",
+    mimeType: "text/plain"
+  },
   async (uri, { path: relativePath }) => {
     const validPath = path.resolve("/my/project", relativePath);
     // Security check: ensure we stay within project root
@@ -131,9 +144,12 @@ server.resource(
 ### 2. Database Record Access
 
 ```typescript
-server.resource(
-  "user-profile",
-  "db://users/{userId}",
+server.registerResource(
+  {
+    name: "user-profile",
+    template: "db://users/{userId}",
+    mimeType: "application/json"
+  },
   async (uri, { userId }) => {
     const user = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
     
@@ -151,9 +167,12 @@ server.resource(
 ### 3. Application State / Health
 
 ```typescript
-server.resource(
-  "app-health",
-  "internal://health",
+server.registerResource(
+  {
+    name: "app-health",
+    uri: "internal://health",
+    mimeType: "application/json"
+  },
   async (uri) => {
     return {
       contents: [{

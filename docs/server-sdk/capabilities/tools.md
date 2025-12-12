@@ -4,14 +4,17 @@ Tools are executable functions that the server exposes to the client (and typica
 
 ## Registering a Tool
 
-Use `server.tool` to register a new tool. You define the tool's name, its input arguments schema (using Zod), and a callback that executes the logic.
+Use `server.registerTool` to register a new tool. You define the tool's name, its input arguments schema (using Zod), and a callback that executes the logic.
 
 ### Signature
 
 ```typescript
-server.tool(
-  name: string,
-  schema: ZodRawShapeCompat,
+server.registerTool(
+  options: {
+    name: string;
+    description?: string;
+    args: ZodRawShape;
+  },
   callback: (args, extra) => CallToolResult | Promise<CallToolResult>
 )
 ```
@@ -21,11 +24,14 @@ server.tool(
 ```typescript
 import { z } from "zod";
 
-server.tool(
-  "calculate-sum",
+server.registerTool(
   {
-    a: z.number().describe("The first number"),
-    b: z.number().describe("The second number")
+    name: "calculate-sum",
+    description: "Calculates the sum of two numbers",
+    args: {
+      a: z.number().describe("The first number"),
+      b: z.number().describe("The second number")
+    }
   },
   async ({ a, b }) => {
     return {
@@ -49,11 +55,14 @@ The schema defines what arguments the tool accepts. The MCP SDK uses Zod to vali
 *   **Descriptions**: `.describe()` is crucial for the LLM to understand what the argument does.
 
 ```typescript
-server.tool(
-  "fetch-weather",
+server.registerTool(
   {
-    city: z.string().describe("City name"),
-    unit: z.enum(["celsius", "fahrenheit"]).default("celsius")
+    name: "fetch-weather",
+    description: "Fetch weather for a city",
+    args: {
+      city: z.string().describe("City name"),
+      unit: z.enum(["celsius", "fahrenheit"]).default("celsius")
+    }
   },
   async ({ city, unit }) => {
     // ... implementation
@@ -94,9 +103,12 @@ interface ImageContent {
 If a tool fails, you can return a result with `isError: true` to inform the model without crashing the interaction.
 
 ```typescript
-server.tool(
-  "read-file",
-  { path: z.string() },
+server.registerTool(
+  {
+    name: "read-file",
+    description: "Reads a file from the filesystem",
+    args: { path: z.string() }
+  },
   async ({ path }) => {
     try {
       const data = await fs.readFile(path, "utf-8");
@@ -121,9 +133,12 @@ server.tool(
 Tools can return images (e.g., generated charts, screenshots) as base64 data.
 
 ```typescript
-server.tool(
-  "generate-chart",
-  { data: z.array(z.number()) },
+server.registerTool(
+  {
+    name: "generate-chart",
+    description: "Generates a chart from data",
+    args: { data: z.array(z.number()) }
+  },
   async ({ data }) => {
     const pngBuffer = await createChart(data);
     return {
@@ -142,9 +157,12 @@ server.tool(
 *Note: While MCP supports progress notifications, standard tools typically await completion. For very long tasks, consider returning a status ID that the model can poll.*
 
 ```typescript
-server.tool(
-  "deploy-app",
-  { branch: z.string() },
+server.registerTool(
+  {
+    name: "deploy-app",
+    description: "Deploys the app from a branch",
+    args: { branch: z.string() }
+  },
   async ({ branch }) => {
     const deploymentId = await startDeployment(branch);
     return {

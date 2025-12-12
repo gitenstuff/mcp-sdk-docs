@@ -10,7 +10,10 @@ The Model Context Protocol (MCP) Server SDK for TypeScript allows you to build s
 ## API Reference
 
 *   **[McpServer](api/mcp-server.md)**: The core class for building servers.
-*   **[Transports](api/transports.md)**: `StdioServerTransport` (CLI) and `StreamableHTTPServerTransport` (HTTP/SSE).
+*   **Transports**:
+    *   **[StdioServerTransport](api/stdio-server-transport.md)**: CLI/Stdio communication.
+    *   **[StreamableHTTPServerTransport](api/streamable-http-server-transport.md)**: HTTP/SSE communication.
+    *   **[SSEServerTransport (Deprecated)](api/sse-server-transport.md)**: Legacy HTTP/SSE communication.
 
 ## Capabilities
 

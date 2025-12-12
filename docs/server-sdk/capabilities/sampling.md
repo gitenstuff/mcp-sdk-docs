@@ -25,7 +25,12 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 const server = new McpServer({ name: "my-server", version: "1.0.0" });
 
 // Inside a tool callback or other handler
-server.tool("summarize-logs", {}, async (args, extra) => {
+server.registerTool(
+  {
+    name: "summarize-logs",
+    args: {}
+  },
+  async (args, extra) => {
   
   // Request the client's LLM to summarize text
   const result = await server.server.createMessage({
@@ -110,7 +115,12 @@ interface CreateMessageResult {
 The server can use the client's LLM to "think" about how to process a request.
 
 ```typescript
-server.tool("complex-query", { query: z.string() }, async ({ query }) => {
+server.registerTool(
+  {
+    name: "complex-query",
+    args: { query: z.string() }
+  },
+  async ({ query }) => {
   // 1. Ask LLM to break down the query
   const plan = await server.server.createMessage({
     messages: [{

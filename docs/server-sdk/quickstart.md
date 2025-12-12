@@ -28,12 +28,14 @@ const server = new McpServer({
 });
 
 // 2. Register a Tool
-server.tool(
-  "calculate-sum",
-  "Add two numbers together",
+server.registerTool(
   {
-    a: z.number(),
-    b: z.number()
+    name: "calculate-sum",
+    description: "Add two numbers together",
+    args: {
+      a: z.number(),
+      b: z.number()
+    }
   },
   async ({ a, b }) => {
     return {
@@ -43,21 +45,37 @@ server.tool(
 );
 
 // 3. Register a Resource
-server.resource(
-  "app-config",
-  "file:///config.json",
+server.registerResource(
+  {
+    name: "app-config",
+    uri: "file:///config.json",
+    mimeType: "application/json"
+  },
   async (uri) => {
     return {
       contents: [{
         uri: uri.href,
         mimeType: "application/json",
         text: JSON.stringify({ appName: "My App", debug: true })
-      }]
     };
   }
 );
 
-// 4. Connect via Transport
+// 4. Register a Prompt
+server.registerPrompt(
+  {
+    name: "greet",
+    description: "Greets the user",
+    args: { name: z.string() }
+  },
+  async ({ name }) => {
+    return {
+      messages: [{ role: "user", content: { type: "text", text: `Hello, ${name}!` } }]
+    };
+  }
+);
+
+// 5. Connect via Transport
 // The Stdio transport allows this server to be run as a subprocess
 const transport = new StdioServerTransport();
 await server.connect(transport);

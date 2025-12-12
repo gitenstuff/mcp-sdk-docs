@@ -2,6 +2,20 @@
 
 The `Client` class is the primary interface for interacting with MCP servers.
 
+## Index
+
+*   [Constructor](#constructor)
+*   [Connection Management](#connection-management)
+    *   [connect](#connecttransport)
+    *   [close](#close)
+*   [Request Methods](#request-methods)
+    *   [listTools](#listtools)
+    *   [callTool](#calltoolparams)
+    *   [listResources](#listresources)
+    *   [readResource](#readresourceparams)
+    *   [listPrompts](#listprompts)
+    *   [getPrompt](#getpromptparams)
+
 ## Constructor
 
 ```typescript
@@ -21,9 +35,13 @@ const client = new Client(
 ```
 
 ### Parameters
-1.  **`clientInfo`** (`Implementation`): Metadata about your client (`name`, `version`).
+1.  **`clientInfo`** (`ClientImplementation`): Metadata about your client.
+    *   `name` (`string`): The name of your client.
+    *   `version` (`string`): The version of your client.
 2.  **`options`** (`ClientOptions`, optional):
-    *   **`capabilities`**: Declare what your client supports (e.g., `sampling`, `roots`).
+    *   `capabilities` (`ClientCapabilities`): Declare what your client supports.
+        *   `sampling` (`object`, optional): Enable sampling support.
+        *   `roots` (`object`, optional): Enable filesystem roots support.
 
 ---
 
@@ -31,45 +49,80 @@ const client = new Client(
 
 ### `connect(transport)`
 
-Connects to the server and performs the initialization handshake.
+Connects to the server and performs the initialization handshake (protocol version negotiation and capability exchange).
 
 ```typescript
 await client.connect(transport);
 ```
 
+*   **`transport`** (`Transport`): The transport instance to connect with (e.g., `StdioClientTransport`, `StreamableHTTPClientTransport`).
+*   **Returns**: `Promise<void>` - Resolves when the connection is successfully established.
+
 ### `close()`
 
-Closes the connection.
+Closes the connection to the server.
 
 ```typescript
 await client.close();
 ```
+
+*   **Returns**: `Promise<void>` - Resolves when the connection is closed.
 
 ---
 
 ## Request Methods
 
 ### `listTools()`
+
 Retrieves the list of tools available on the server.
 
+```typescript
+const result = await client.listTools();
+console.log(result.tools); 
+```
+
+*   **Returns**: `Promise<{ tools: Tool[] }>`
+    *   `tools` (`Tool[]`): An array of available tools.
+        *   `name` (`string`): The tool name.
+        *   `description` (`string`, optional): Tool description.
+        *   `inputSchema` (`object`): JSON Schema for the tool's arguments.
+
 ### `callTool(params)`
-Calls a tool.
-*   **`params`**: `{ name: string, arguments: object }`
-*   **Returns**: `CallToolResult`
+
+Calls a tool on the server with specified arguments.
 
 ```typescript
 const result = await client.callTool({
-  name: "add",
+  name: "calculate-sum",
   arguments: { a: 1, b: 2 }
 });
 ```
 
+*   **`params`** (`object`):
+    *   `name` (`string`): The name of the tool to call.
+    *   `arguments` (`Record<string, unknown>`): The arguments for the tool, matching its input schema.
+*   **Returns**: `Promise<CallToolResult>`
+    *   `content` (`(TextContent | ImageContent | EmbeddedResource)[]`): The tool's output.
+    *   `isError` (`boolean`, optional): `true` if the tool execution failed.
+
 ### `listResources()`
-Lists available resources.
+
+Lists available resources on the server.
+
+```typescript
+const result = await client.listResources();
+```
+
+*   **Returns**: `Promise<{ resources: Resource[] }>`
+    *   `resources` (`Resource[]`): An array of available resources.
+        *   `uri` (`string`): The unique URI of the resource.
+        *   `name` (`string`): Human-readable name.
+        *   `description` (`string`, optional): Description of the resource.
+        *   `mimeType` (`string`, optional): The MIME type of the resource content.
 
 ### `readResource(params)`
-Reads a resource by URI.
-*   **`params`**: `{ uri: string }`
+
+Reads the content of a specific resource by its URI.
 
 ```typescript
 const result = await client.readResource({
@@ -77,12 +130,32 @@ const result = await client.readResource({
 });
 ```
 
+*   **`params`** (`object`):
+    *   `uri` (`string`): The URI of the resource to read.
+*   **Returns**: `Promise<ReadResourceResult>`
+    *   `contents` (`(TextResourceContents | BlobResourceContents)[]`): The resource content.
+        *   `uri` (`string`): The URI of the resource.
+        *   `mimeType` (`string`, optional): MIME type.
+        *   `text` (`string`, optional): Text content (for text resources).
+        *   `blob` (`string`, optional): Base64 encoded binary data (for blob resources).
+
 ### `listPrompts()`
-Lists available prompts.
+
+Lists available prompts on the server.
+
+```typescript
+const result = await client.listPrompts();
+```
+
+*   **Returns**: `Promise<{ prompts: Prompt[] }>`
+    *   `prompts` (`Prompt[]`): An array of available prompts.
+        *   `name` (`string`): The prompt name.
+        *   `description` (`string`, optional): Description.
+        *   `arguments` (`object[]`, optional): List of arguments the prompt accepts.
 
 ### `getPrompt(params)`
-Gets a prompt with arguments.
-*   **`params`**: `{ name: string, arguments?: object }`
+
+Retrieves a prompt template instantiated with specific arguments.
 
 ```typescript
 const result = await client.getPrompt({
@@ -90,3 +163,12 @@ const result = await client.getPrompt({
   arguments: { changes: "diff..." }
 });
 ```
+
+*   **`params`** (`object`):
+    *   `name` (`string`): The name of the prompt to retrieve.
+    *   `arguments` (`Record<string, string>`, optional): Arguments to fill the prompt template.
+*   **Returns**: `Promise<GetPromptResult>`
+    *   `description` (`string`, optional): Description of the instantiated prompt.
+    *   `messages` (`PromptMessage[]`): The messages to send to the LLM.
+        *   `role` (`"user" | "assistant"`): The message role.
+        *   `content` (`object`): The message content (text, image, or resource).
