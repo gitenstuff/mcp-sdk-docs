@@ -4,74 +4,20 @@ This document serves as a centralized index for TypeScript definitions across th
 
 ## Quick Links
 
-- [**Client SDK Types**](docs/client-sdk/types.md): Definitions for building MCP Clients (Hosts/Agents).
-- [**Server SDK Types**](docs/server-sdk/types.md): Definitions for building MCP Servers.
+1.  **[Client SDK Types Index](docs/client-sdk/types.md)**: Definitions for building MCP Clients (Hosts/Agents).
+2.  **[Server SDK Types Index](docs/server-sdk/types.md)**: Definitions for building MCP Servers.
 
 ## Shared Data Models
 
-The following types are core to the protocol and shared conceptually between Client and Server interactions.
-
 ### Protocol Messages
 
-```typescript
-// JSON-RPC 2.0 Base
-interface JSONRPCMessage {
-  jsonrpc: "2.0";
-}
-
-interface JSONRPCRequest extends JSONRPCMessage {
-  method: string;
-  params?: object;
-  id?: number | string;
-}
-
-interface JSONRPCResponse extends JSONRPCMessage {
-  result?: unknown;
-  error?: {
-    code: number;
-    message: string;
-    data?: unknown;
-  };
-  id: number | string;
-}
-
-interface JSONRPCNotification extends JSONRPCMessage {
-  method: string;
-  params?: object;
-}
-```
+1.  **[JSONRPCMessage](shared-low-level-api/jsonrpc-message.md)**: Base JSON-RPC 2.0 message interface.
+2.  **[JSONRPCRequest](shared-low-level-api/jsonrpc-request.md)**: JSON-RPC 2.0 request message.
+3.  **[JSONRPCResponse](shared-low-level-api/jsonrpc-response.md)**: JSON-RPC 2.0 response message.
+4.  **[JSONRPCNotification](shared-low-level-api/jsonrpc-notification.md)**: JSON-RPC 2.0 notification message.
 
 ### Content Types
 
-Used in Tools, Resources, Prompts, and Sampling.
-
-```typescript
-interface TextContent {
-  type: "text";
-  text: string;
-}
-
-interface ImageContent {
-  type: "image";
-  data: string; // Base64 encoded
-  mimeType: string;
-}
-
-interface EmbeddedResource {
-  type: "resource";
-  resource: {
-    uri: string;
-    mimeType?: string;
-    text?: string;
-    blob?: string; // Base64 encoded
-  };
-}
-```
-
-## Architecture Overview
-
-1.  **Transport Layer**: Handles raw message passing (Stdio, SSE).
-2.  **Protocol Layer**: Manages JSON-RPC message framing and correlation.
-3.  **Application Layer**:
-    *   **Client**: `Client` class connects to transports, exposes `callTool`, `readResource`, etc.
-    *   **Server**: `McpServer` class connects to transports, registers capabilities (`tool`, `resource`).
+1.  **[TextContent](shared-low-level-api/text-content.md)**: Represents text content.
+2.  **[ImageContent](shared-low-level-api/image-content.md)**: Represents image content.
+3.  **[EmbeddedResource](shared-low-level-api/embedded-resource.md)**: Represents an embedded resource.

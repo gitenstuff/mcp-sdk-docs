@@ -1,229 +1,28 @@
 # Server SDK TypeScript Definitions
 
-## McpServer Class
+This document indexes the TypeScript definitions relevant to the MCP Server SDK.
 
-```typescript
-/**
- * Metadata about the server implementation.
- */
-interface ServerImplementation {
-  name: string;
-  version: string;
-}
+## McpServer Class Related
 
-/**
- * Capability configuration for the server.
- */
-interface ServerCapabilities {
-  logging?: object;
-  resources?: {
-    subscribe?: boolean;
-    listChanged?: boolean;
-  };
-  tools?: {
-    listChanged?: boolean;
-  };
-  prompts?: {
-    listChanged?: boolean;
-  };
-  experimental?: Record<string, object>;
-}
+1.  **[ServerImplementation](api/server-implementation.md)**: Metadata about the server implementation.
+2.  **[ServerCapabilities](api/server-capabilities.md)**: Capability configuration for the server.
+3.  **[ServerOptions](api/server-options.md)**: Options for initializing `McpServer`.
+4.  **[RequestContext](api/request-context.md)**: Context provided to handlers.
 
-/**
- * Options for initializing McpServer.
- */
-interface ServerOptions {
-  capabilities?: ServerCapabilities;
-  enforceStrictCapabilities?: boolean;
-}
+<h2>Transport Interfaces</h2>
 
-/**
- * The high-level class for building MCP servers.
- */
-declare class McpServer {
-  constructor(serverInfo: ServerImplementation, options?: ServerOptions);
+1.  **[StreamableHTTPServerTransportOptions](api/streamable-http-server-transport-options.md)**: Options for `StreamableHTTPServerTransport`.
 
-  /**
-   * Connects the server to a transport.
-   */
-  connect(transport: Transport): Promise<void>;
+<h2>Handler Return Types</h2>
 
-  /**
-   * Closes the server connection.
-   */
-  close(): Promise<void>;
+1.  **[ToolResult](api/tool-result.md)**: Return type for tool handlers.
+2.  **[ResourceResult](api/resource-result.md)**: Return type for resource handlers.
+3.  **[PromptResult](api/prompt-result.md)**: Return type for prompt handlers.
 
-  /**
-   * Registers a tool.
-   */
-  tool<Schema extends ZodRawShape>(
-    name: string,
-    description: string,
-    parameters: Schema,
-    handler: (args: z.infer<ZodObject<Schema>>, extra: RequestContext) => ToolResult | Promise<ToolResult>
-  ): void;
-  
-  // Overload for tool without description
-  tool<Schema extends ZodRawShape>(
-    name: string,
-    parameters: Schema,
-    handler: (args: z.infer<ZodObject<Schema>>, extra: RequestContext) => ToolResult | Promise<ToolResult>
-  ): void;
+<h2>Sampling (Client Request)</h2>
 
-  /**
-   * Registers a resource.
-   */
-  resource(
-    name: string,
-    uriOrTemplate: string,
-    handler: (uri: URL, variables: Record<string, string>, extra: RequestContext) => ResourceResult | Promise<ResourceResult>
-  ): void;
+1.  **[Server](api/server.md)**: Interface for requesting sampling from the client.
+2.  **[CreateMessageRequestParams](api/create-message-request-params.md)**: Parameters for requesting a message creation.
+3.  **[CreateMessageResult](api/create-message-result.md)**: Result of creating a message.
+4.  **[SamplingMessage](api/sampling-message.md)**: A message used in sampling requests.
 
-  /**
-   * Registers a prompt.
-   */
-  prompt<Schema extends ZodRawShape>(
-    name: string,
-    description: string,
-    parameters: Schema,
-    handler: (args: z.infer<ZodObject<Schema>>) => PromptResult | Promise<PromptResult>
-  ): void;
-    
-   // Overload for prompt without description
-  prompt<Schema extends ZodRawShape>(
-    name: string,
-    parameters: Schema,
-    handler: (args: z.infer<ZodObject<Schema>>) => PromptResult | Promise<PromptResult>
-  ): void;
-
-  /**
-   * Access to the low-level Server instance.
-   */
-  server: Server;
-}
-
-/**
- * Context provided to handlers.
- */
-interface RequestContext {
-  request: JSONRPCRequest;
-  signal: AbortSignal;
-}
-```
-
-## Transport Interfaces
-
-```typescript
-declare class StdioServerTransport implements Transport {
-  constructor(stdin?: ReadableStream, stdout?: WritableStream);
-}
-
-interface StreamableHTTPServerTransportOptions {
-  sessionIdGenerator?: () => string | undefined;
-  enableJsonResponse?: boolean;
-  enableDnsRebindingProtection?: boolean;
-  allowedHosts?: string[];
-  allowedOrigins?: string[];
-  onsessioninitialized?: (sessionId: string) => void;
-  onsessionclosed?: (sessionId: string) => void;
-}
-
-declare class StreamableHTTPServerTransport implements Transport {
-  constructor(options?: StreamableHTTPServerTransportOptions);
-  
-  handleRequest(
-    req: IncomingMessage, 
-    res: ServerResponse, 
-    parsedBody?: unknown
-  ): Promise<void>;
-}
-
-/**
- * @deprecated Use StreamableHTTPServerTransport instead.
- */
-declare class SSEServerTransport implements Transport {
-  constructor(path: string, res: ServerResponse);
-  start(): Promise<void>;
-  handlePostMessage(req: IncomingMessage, res: ServerResponse, parsedBody?: unknown): Promise<void>;
-}
-```
-
-## Handler Return Types
-
-```typescript
-/**
- * Return type for tool handlers.
- */
-interface ToolResult {
-  content: (TextContent | ImageContent | EmbeddedResource)[];
-  isError?: boolean;
-}
-
-/**
- * Return type for resource handlers.
- */
-interface ResourceResult {
-  contents: (TextResourceContents | BlobResourceContents)[];
-}
-
-/**
- * Return type for prompt handlers.
- */
-interface PromptResult {
-  description?: string;
-  messages: PromptMessage[];
-}
-```
-
-## Sampling (Client Request)
-
-```typescript
-/**
- * Methods available on server.server for requesting sampling.
- */
-interface Server {
-  createMessage(params: CreateMessageRequestParams): Promise<CreateMessageResult>;
-}
-
-interface CreateMessageRequestParams {
-  messages: SamplingMessage[];
-  systemPrompt?: string;
-  includeContext?: "none" | "thisServer" | "allServers";
-  temperature?: number;
-  maxTokens?: number;
-  stopSequences?: string[];
-  metadata?: Record<string, unknown>;
-  modelPreferences?: {
-    hints?: { name: string }[];
-    costPriority?: number;
-    speedPriority?: number;
-    intelligencePriority?: number;
-  };
-}
-
-interface CreateMessageResult {
-  role: "assistant";
-  content: {
-    type: "text";
-    text: string;
-  } | {
-    type: "image";
-    data: string;
-    mimeType: string;
-  };
-  model: string;
-  stopReason?: "endTurn" | "stopSequence" | "maxTokens";
-}
-
-interface SamplingMessage {
-  role: "user" | "assistant";
-  content: {
-      type: "text";
-      text: string;
-  } | {
-      type: "image";
-      data: string;
-      mimeType: string;
-  };
-}
-```

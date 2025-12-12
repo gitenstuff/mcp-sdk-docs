@@ -23,6 +23,17 @@
 ### Patterns
 - [docs/client-sdk/patterns/host-application.md](docs/client-sdk/patterns/host-application.md): READ for integrating the client into a larger application (Host).
 
+## Shared Types
+
+- [types.md](types.md): REFERENCE. Index of shared TypeScript definitions.
+- [shared-low-level-api/jsonrpc-message.md](shared-low-level-api/jsonrpc-message.md)
+- [shared-low-level-api/jsonrpc-request.md](shared-low-level-api/jsonrpc-request.md)
+- [shared-low-level-api/jsonrpc-response.md](shared-low-level-api/jsonrpc-response.md)
+- [shared-low-level-api/jsonrpc-notification.md](shared-low-level-api/jsonrpc-notification.md)
+- [shared-low-level-api/text-content.md](shared-low-level-api/text-content.md)
+- [shared-low-level-api/image-content.md](shared-low-level-api/image-content.md)
+- [shared-low-level-api/embedded-resource.md](shared-low-level-api/embedded-resource.md)
+
 ## Server SDK
 
 ### Core
