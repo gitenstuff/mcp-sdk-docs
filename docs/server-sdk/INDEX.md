@@ -28,3 +28,4 @@ Learn how to implement the core features of MCP:
 
 *   **[Authentication](patterns/authentication.md)**: Secure your server using OAuth and Bearer tokens.
 *   **[Error Handling](patterns/error-handling.md)**: Use `McpError` and standard codes for robust failure modes.
+*   **[McpError Class](api/mcp-error.md)**: Details on the `McpError` class for robust error reporting.

@@ -6,7 +6,10 @@
 
 ## API & Class Signatures
 - [api/client.md](api/client.md): READ for `Client` constructor options, request methods, and connection management.
-- [api/transports.md](api/transports.md): READ for `StreamableHTTPClientTransport` (Client HTTP), `StdioClientTransport`, and `SSEClientTransport` (Legacy) information.
+- [api/transports.md](api/transports.md): Index for Client Transport APIs.
+- [api/stdio-client-transport.md](api/stdio-client-transport.md): READ for `StdioClientTransport` API.
+- [api/streamable-http-client-transport.md](api/streamable-http-client-transport.md): READ for `StreamableHTTPClientTransport` (Client HTTP) API.
+- [api/sse-client-transport.md](api/sse-client-transport.md): READ for `SSEClientTransport` (Legacy) API.
 
 ## Feature Consumption
 - [capabilities/tools.md](capabilities/tools.md): READ for listing and calling tools.

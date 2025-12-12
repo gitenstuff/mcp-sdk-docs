@@ -4,17 +4,7 @@ Robust error handling is essential for creating reliable MCP servers. The SDK pr
 
 ## `McpError` Class
 
-The `McpError` class extends the standard JavaScript `Error` class, adding a numeric `code` and optional `data` field. It is the standard way to throw protocol-aware errors from your tools, resources, and prompt handlers.
-
-### Constructor
-
-```typescript
-new McpError(code: ErrorCode | number, message: string, data?: unknown)
-```
-
-*   **`code`**: A numeric error code (see below).
-*   **`message`**: A human-readable description of the error.
-*   **`data`**: (Optional) Additional structured data to help the client debug or handle the error.
+The **[`McpError`](../api/mcp-error.md)** class is the standard way to throw protocol-aware errors from your tools, resources, and prompt handlers. It extends the standard JavaScript `Error` class, adding a numeric `code` and optional `data` field.
 
 ### Example Usage
 

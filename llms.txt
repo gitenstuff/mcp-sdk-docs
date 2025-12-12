@@ -8,7 +8,10 @@
 
 ### API & Class Signatures
 - [docs/client-sdk/api/client.md](docs/client-sdk/api/client.md): READ for `Client` constructor options, request methods, and connection management.
-- [docs/client-sdk/api/transports.md](docs/client-sdk/api/transports.md): READ for `StreamableHTTPClientTransport` (Client HTTP), `StdioClientTransport`, and `SSEClientTransport` (Legacy) information.
+- [docs/client-sdk/api/transports.md](docs/client-sdk/api/transports.md): Index for Client Transport APIs.
+- [docs/client-sdk/api/stdio-client-transport.md](docs/client-sdk/api/stdio-client-transport.md): READ for `StdioClientTransport` API.
+- [docs/client-sdk/api/streamable-http-client-transport.md](docs/client-sdk/api/streamable-http-client-transport.md): READ for `StreamableHTTPClientTransport` (Client HTTP) API.
+- [docs/client-sdk/api/sse-client-transport.md](docs/client-sdk/api/sse-client-transport.md): READ for `SSEClientTransport` (Legacy) API.
 
 ### Feature Consumption
 - [docs/client-sdk/capabilities/tools.md](docs/client-sdk/capabilities/tools.md): READ for listing and calling tools.
@@ -41,4 +44,5 @@
 ### Patterns
 - [docs/server-sdk/patterns/authentication.md](docs/server-sdk/patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
 - [docs/server-sdk/patterns/error-handling.md](docs/server-sdk/patterns/error-handling.md): READ for `McpError` usage and error codes.
+- [docs/server-sdk/api/mcp-error.md](docs/server-sdk/api/mcp-error.md): READ for `McpError` Class API.
 - [types.md](types.md): REFERENCE. Index of TypeScript definitions for Client and Server SDKs.

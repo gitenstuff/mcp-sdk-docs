@@ -10,7 +10,10 @@ The Model Context Protocol (MCP) Client SDK for TypeScript allows you to build c
 ## API Reference
 
 *   **[Client](api/client.md)**: The core class for connecting to servers and making requests.
-*   **[Transports](api/transports.md)**: `StdioClientTransport` (CLI) and `SSEClientTransport` (HTTP).
+*   **[Transports](api/transports.md)**: Index of available client transports.
+*   **[StdioClientTransport](api/stdio-client-transport.md)**: Communicate with a server process via standard input/output.
+*   **[StreamableHTTPClientTransport](api/streamable-http-client-transport.md)**: Connect via HTTP/SSE (Recommended).
+*   **[SSEClientTransport](api/sse-client-transport.md)**: Legacy HTTP/SSE transport (Deprecated).
 
 ## Capabilities
 

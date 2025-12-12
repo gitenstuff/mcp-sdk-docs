@@ -19,4 +19,5 @@
 ## Patterns
 - [patterns/authentication.md](patterns/authentication.md): READ for OAuth flows and `auth/*` middleware usage.
 - [patterns/error-handling.md](patterns/error-handling.md): READ for `McpError` usage and error codes.
+- [api/mcp-error.md](api/mcp-error.md): READ for `McpError` Class API.
 - [types.md](types.md): REFERENCE. TypeScript definitions for McpServer, Transports, and Capabilities.
